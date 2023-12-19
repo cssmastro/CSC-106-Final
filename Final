@@ -1,0 +1,213 @@
+//Current Scene
+var currentScene = 0; // splash scene (0), draw screen (1)
+
+//Tarot Deck
+var tarotDeck = [
+    {num: "0", card: "The Fool", meaning: "Innocence\nNew Beginnings\nFree Spirit"},
+    {num: "I", card: "The Magician", meaning: "Willpower\nIntention\nCreation\nManifestation"},
+    {num: "II", card: "High Priestess", meaning: "Intuition\nMystery\nInner Voice"},
+    {num: "III", card: "The Empress", meaning: "Motherhood\nFertility\nNature"},
+    {num: "IV", card: "The Emporer", meaning: "Authority\nStructure\nDiscipline\nFatherhood"},
+    {num: "V", card: "The Hierophant", meaning: "Tradition\nConformity\nMorality\nEthics"},
+    {num: "VI", card: "The Lovers", meaning: "Partnerships\nUnion\nDuality\nChoice"},
+    {num: "VII", card: "The Chariot", meaning: "Direction\nControl\nDetermination"},
+    {num: "VIII", card: "Strength", meaning: "Bravery\nInstinct\nConfidence\nInner Strength"},
+    {num: "IX", card: "The Hermit", meaning: "Contemplation\nSearch For Truth\nInner Guidance"},
+    {num: "X", card: "Wheel of Fortune", meaning: "Change\nCycles\nInevitable Fate"},
+    {num: "XI", card: "Justice", meaning: "Cause and Effect\nClarity\nTruth"},
+    {num: "XII", card: "Hanged Man", meaning: "Sacrifice\nRelease\nMartyrdom"},
+    {num: "XIII", card: "Death", meaning: "End of Cycle\nBeginns\nTransformation\nMetamorphosis"},
+    {num: "XIV", card: "Temperance", meaning: "The Middle Path\nPatience\nFinding Meaning"},
+    {num: "XV", card: "The Devil", meaning: "Excess\nMaterialism\nPlayfulness"},
+    {num: "XVI", card: "The Tower", meaning: "Sudden Upheaval\nPride\nDisaster"},
+    {num: "XVII", card: "The Star", meaning: "Hope\nFaith\nRejuvenation"},
+    {num: "XVIII", card: "The Moon", meaning: "Unconscious\nIllusions\nSecrecy"},
+    {num: "XIX", card: "The Sun", meaning: "Joy\nSuccess\nCelebration\nPositivity"},
+    {num: "XX", card: "Judgement", meaning: "Reflection\nReckoning\nAwakening"},
+    {num: "XXI", card: "The World", meaning: "Fulfillment\nHarmony\nCompletion"},
+    ];
+    
+//Draw Bitomji Function
+var drawBitmoji = function(bitmojiObject) {
+    var bitmojiX = bitmojiObject.bitmojiX;
+    var bitmojiY = bitmojiObject.bitmojiY;
+    var bitmojiHeight = bitmojiObject.bitmojiHeight;
+    var shirtColor = bitmojiObject.shirtColor;
+    var includeInitials = bitmojiObject.includeInitials;
+    
+    noStroke();
+    fill(255,205,148);
+    ellipse(bitmojiX, bitmojiY, bitmojiHeight/150*85, bitmojiHeight/150*100); //head
+    
+    fill(106, 0, 255);
+    arc(bitmojiX-bitmojiHeight/150*45, bitmojiY+bitmojiHeight/150*35, bitmojiHeight/150     *30, bitmojiHeight/150*55, 0, 420); //left cheek
+    arc(bitmojiX+bitmojiHeight/150*45, bitmojiY+bitmojiHeight/150*35, bitmojiHeight/150     *30, bitmojiHeight/150*55, 0, 420); //right cheek
+    
+    fill(61, 35, 20);
+    quad(bitmojiX-bitmojiHeight/150*40, bitmojiY-bitmojiHeight/150*30, bitmojiX-bitmojiHeight/150*35, bitmojiY-bitmojiHeight/150*35, bitmojiX-bitmojiHeight/150*35, bitmojiY+bitmojiHeight/150*15, bitmojiX-bitmojiHeight/150*45, bitmojiY+bitmojiHeight/150*5); //left hair
+    quad(bitmojiX+bitmojiHeight/150*40, bitmojiY-bitmojiHeight/150*35, bitmojiX+bitmojiHeight/150*45, bitmojiY-bitmojiHeight/150*30, bitmojiX+bitmojiHeight/150*45, bitmojiY+bitmojiHeight/150*5, bitmojiX+bitmojiHeight/150*35, bitmojiY+bitmojiHeight/150*15); //right hair
+    arc(bitmojiX, bitmojiY-bitmojiHeight/150*40, bitmojiHeight/150*90, bitmojiHeight/150*45, 10, 170); //top hair
+    
+    fill(61, 35, 20);
+    ellipse(bitmojiX-bitmojiHeight/150*15,bitmojiY-bitmojiHeight/150*10,bitmojiHeight/150*10,bitmojiHeight/150*10); //left eye
+    ellipse(bitmojiX+bitmojiHeight/150*15,bitmojiY-bitmojiHeight/150*10,bitmojiHeight/150*10,bitmojiHeight/150*10); //right eye
+    
+    stroke(0, 0, 0);
+    fill(255,205,148);
+    bezier(bitmojiX,bitmojiY,bitmojiX+bitmojiHeight/150*20,bitmojiY+bitmojiHeight/150*20,bitmojiX-bitmojiHeight/150*10,bitmojiY+bitmojiHeight/150*20,bitmojiX-bitmojiHeight/150*5,bitmojiY+bitmojiHeight/150*15); //nose
+    
+    line(bitmojiX-bitmojiHeight/150*15,bitmojiY+bitmojiHeight/150*30,bitmojiX+bitmojiHeight/150*15,bitmojiY+bitmojiHeight/150*35);
+    
+    noStroke();
+    fill(0, 0, 0);
+    arc(bitmojiX, bitmojiY-bitmojiHeight/150*30, bitmojiHeight/150*90, bitmojiHeight/150*45, 160, 380); //hat
+    
+    fill(shirtColor);
+    quad(bitmojiX-bitmojiHeight/150*45,bitmojiY+bitmojiHeight/150*45,bitmojiX-bitmojiHeight/150*60,bitmojiY+bitmojiHeight/150*95,bitmojiX+bitmojiHeight/150*60,bitmojiY+bitmojiHeight/150*95,bitmojiX+bitmojiHeight/150*45,bitmojiY+bitmojiHeight/150*45); //shirt
+    
+    fill(255,205,148);
+    arc(bitmojiX, bitmojiY+bitmojiHeight/150*45, bitmojiHeight/150*40, bitmojiHeight/150*45, 0, 180); //neck
+    
+    if(includeInitials) {
+        fill(0, 0, 0);
+        textSize(bitmojiHeight/150*25);
+        text("CM", bitmojiX-bitmojiHeight/150*20,bitmojiY+bitmojiHeight/150*90); //initials
+    }
+};
+
+/* Khan Button class */
+var Button = function(config) {
+  this.x = config.x || 0;
+  this.y = config.y || 0;
+  this.width = config.width || 160;
+  this.height = config.height || 50;
+  this.label = config.label || "Click";
+  this.onClick = config.onClick || function() {};
+};
+
+Button.prototype.draw = function() {
+  fill(255, 98, 0);
+  rect(this.x, this.y, this.width, this.height, 5);
+  fill(0, 0, 0);
+  textSize(19);
+  textAlign(LEFT, TOP);
+  text(this.label, this.x+10, this.y+this.height/4);
+};
+
+Button.prototype.isMouseInside = function() {
+  return mouseX > this.x &&
+         mouseX < (this.x + this.width) &&
+         mouseY > this.y &&
+         mouseY < (this.y + this.height);
+};
+
+Button.prototype.handleMouseClick = function() {
+  if (this.isMouseInside()) {
+      this.onClick();
+  }
+};
+
+//Draw Button
+var drawButton = new Button({
+    x: 125,
+    y: 300,
+    label: "Draw Cards",
+    onClick: function() {
+        currentScene = 1;
+    }
+});
+
+//Re-Draw Button
+var redrawButton = new Button({
+    x: 125,
+    y: 300,
+    label: "Re-Draw Cards",
+    onClick: function() {
+        currentScene = 1;
+    }
+});
+
+//Splash Screen
+var splashScreen = function() {
+    background(106, 0, 255);
+    fill(255, 255, 255);
+    textSize(23);
+    textAlign(CENTER,CENTER);
+    text("Colby's Tarot Card Reader", 175, 100);
+    text("Press Button to Draw your Cards", 200, 175);
+    text("Find Out Your\nPast, Present, and Future", 200, 250);
+    drawBitmoji({	
+        bitmojiX: 350,
+        bitmojiY: 75,
+        bitmojiHeight: 100,
+        shirtColor:color(161, 161, 161),
+        includeInitials: false
+    });
+    drawButton.draw();
+};
+
+//Draw Screen
+var drawScreen = function(){
+    background(0, 71, 17);
+    redrawButton.draw();
+    
+    //Width, Height, and Distance between each rectangle
+    var rectWidth = 105;
+    var rectHeight = 150;
+    var rectDist = 20;
+    
+    // Draw Screen info
+    fill(255, 0, 0);
+    textSize(30);
+    text("Here are your cards", 75, 50);
+    textSize(20);
+    text("Past", 55, 100);
+    text("Present", 165, 100);
+    text("Future", 295, 100);
+    
+    //Draw Three Cards
+    for (var i = 0; i < 3; i++) {
+        // Calculate the position of each card
+        var rectX = i * (rectWidth + rectDist) + rectDist;
+        var rectY = height / 2 - rectHeight / 2;
+
+        // Draws Random Card
+        if(tarotDeck.length > 0){
+            var randomIndex = Math.floor(Math.random() * tarotDeck.length);
+            var selectedCard = tarotDeck[randomIndex];
+        
+            //Remove cards form deck so they can't be drawn twice
+            tarotDeck.splice(randomIndex, 1);
+
+            // Draw the Rectangles for the  Cards
+            fill(159, 0, 173);
+            rect(rectX, rectY, rectWidth, rectHeight);
+
+            // Display the card information in the rectangle
+            fill(230, 235, 76);
+            textSize(13);
+            textAlign(CENTER, CENTER);
+            text(selectedCard.num, rectX + rectWidth / 2, rectY + 20);
+            text(selectedCard.card, rectX + rectWidth / 2, rectY + 50);
+            textSize(12);
+            text(selectedCard.meaning, rectX + rectWidth / 2, rectY + rectHeight / 1.5);
+        }
+    }
+};
+
+//To Draw The Cards
+var mouseClicked = function() {
+    if (currentScene === 0) {
+        drawButton.handleMouseClick();
+    } else if (currentScene === 1) {
+        redrawButton.handleMouseClick();
+        drawScreen();
+    }
+};
+
+//Tells which scene is which screen
+if (currentScene === 0) {
+        splashScreen();
+    } else if (currentScene === 1) {
+        drawScreen();
+    }
